@@ -20,22 +20,36 @@
 // exports.onCreatePage = async ({ page, actions }) => {
 //   const { createPage, deletePage } = actions
 //   // Check if the page is a localized 404
-//   if (page.path.match(/^\/[a-z]{2}\/404\/$/)) {
-//     const oldPage = { ...page }
-//     // Get the language code from the path, and match all paths
-//     // starting with this code (apart from other valid paths)
-//     const langCode = page.path.split(`/`)[1]
-//     page.matchPath = `/${langCode}/*`
-//     // Recreate the modified page
-//     deletePage(oldPage)
-//     createPage(page)
+//   if (page.path.startsWith('/404')) {
+//     page.layout = '404.index';
 //   }
 // }
 
-exports.onCreatePage = async ({ page, actions }) => {
-  const { createPage, deletePage } = actions
-  // Check if the page is a localized 404
-  if (page.path.startsWith('/404')) {
-    page.layout = '404.index';
+
+exports.onCreateWebpackConfig = helper => {
+  const { stage, actions, getConfig } = helper
+
+  // if (stage === "build-html") {
+  //   actions.setWebpackConfig({
+  //     module: {
+  //       rules: [
+  //         {
+  //           test: /@firebase/,
+  //           use: loaders.null(),
+  //         },
+  //       ],
+  //     },
+  //   })
+  // }
+
+  if (stage === "develop" || stage === 'build-javascript') {
+    const config = getConfig()
+    const miniCssExtractPlugin = config.plugins.find(
+      plugin => plugin.constructor.name === "MiniCssExtractPlugin"
+    )
+    if (miniCssExtractPlugin) {
+      miniCssExtractPlugin.options.ignoreOrder = true
+    }
+    actions.replaceWebpackConfig(config)
   }
 }

@@ -1,3 +1,7 @@
+require('dotenv').config({
+  path: `.env.${process.env.NODE_ENV}`
+})
+
 module.exports = {
   siteMetadata: {
     title: `Nadanaloga.com`,
@@ -5,14 +9,6 @@ module.exports = {
     author: `Nadanaloga`,
   },
   plugins: [
-    // {\
-    //   resolve: `gatsby-source-stripe`,
-    //   options: {
-    //     objects: ["Price"],
-    //     secretKey: "pk_test_51HXA6CKseIRAR7TdBjsk6vLTr86gJ5wUHUZXiihSXs6ZuxtVMuLdHTzb0NDHw6ZaEh9eK760o8jiShkMUJYeNnFF00rAsXt6la",
-    //     downloadFiles: false,
-    //   },
-    // },
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-source-filesystem`,
@@ -20,6 +16,14 @@ module.exports = {
         name: `images`,
         path: `${__dirname}/src/images`,
       },
+    },
+    {
+      resolve: `gatsby-source-stripe`,
+      options: {
+        objects: ['Price', 'Product', 'ApplicationFee', 'Sku', 'Subscription'],
+        secretKey:  process.env.GATSBY_SECRET_KEY,
+        downloadFiles: false,
+      }
     },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,

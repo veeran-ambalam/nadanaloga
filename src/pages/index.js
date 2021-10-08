@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactModal from 'react-modal'
 import { navigate } from 'gatsby'
+import getStripe from "./../utils/stripe"
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -29,7 +30,7 @@ export default class IndexPage extends React.Component {
 		this.contest = this.contest.bind(this);
 	}
 
-	handleModalOpen = event => {
+	async handleModalOpen(event){
 		// console.log('handleModalOpen: ', event);
 		this.setState({ isModalOpen: true })
 	}
@@ -42,6 +43,7 @@ export default class IndexPage extends React.Component {
 	async contest(event){
 		event.preventDefault();
 		this.setState({loading: true});
+
 
 		if(!this.state.video){
 			toast.error("Please upload your video and submit", "Error");
@@ -83,8 +85,25 @@ export default class IndexPage extends React.Component {
 
         const db = firebase.firestore();
         db.settings({});
-        const userRef = await db.collection('danceLeads').add(form);
-        navigate('/success/#'+code) ;
+        const userRef = await db.collection(competition).add(form);
+
+		console.log(userRef.id)
+
+		localStorage.setItem('paymentObj', JSON.stringify({"type": competition, "_id": userRef.id}));
+
+		const url = typeof window !== 'undefined' ? window.location.href.split('/#')[0] : '';
+		const stripe = await getStripe()
+		const { error } = await stripe.redirectToCheckout({
+			mode: "payment",
+			lineItems: [{ price: "price_1JiJV9KseIRAR7TdjSG1ADNP", quantity: 1 }],
+			successUrl: url+'/success',
+			cancelUrl: url+'/cancel',
+		  })
+		if (error) {
+		console.warn("Error:", error)
+			this.setState({loading: false});
+		}
+        // navigate('/success/#'+code) ;
 	}
 
     handleFile = (e) => {
@@ -132,80 +151,111 @@ export default class IndexPage extends React.Component {
 			        </div>
 			    </div>
 
-			    <section className="section" id="competition">
+			    <section className="section promote-youtube" id="competition">
 			        <div className="container">
 			            <div className="row">
-			            	<div className="right-content col-lg-12 col-md-6 col-sm-12 col-xs-12">
-			            		<h2 className="head">Vijayadashami <em>2020</em></h2>
+			            	<div className="col-lg-12 col-md-6 col-sm-12 col-xs-12">
+			            		<h2 className="head">Vijayadashami <em>2021</em></h2>
 			            		<p className="sub-head">Vijayadashami, the day celebrates the good over the evil, light over daskness and knowledge over ignorance, its the day of <em>vidyarambam</em>, when students are introduced to the world of learning. Competition is one of the way of learning, come lets compete with the world.</p>
 		            		</div>
-		            		<div className="right-content col-lg-6 align-items-center d-flex flex-column justify-content-center">
+		            		<div className="col-lg-6 d-flex flex-column justify-content-center">
 		            			<h2 className="head">subscribe our <a href="https://www.youtube.com/channel/UCbgaFaw--RTkahdh9H0X89w"><i class="fa fa-youtube"></i><em>Youtube</em></a> channel.</h2>
-		            			<p className="sub-head"><strong>Contestants Kindly subscribe our <a href="https://www.youtube.com/channel/UCbgaFaw--RTkahdh9H0X89w"><i className="fa fa-youtube"></i><em>Youtube</em></a> channel and press the bell icon to get the notifications regarding the results.</strong></p>
-		            			<p className="sub-head"><strong>Results will be announced within October and Winners, Best performers video will be posted on our Youtube channel.</strong></p>
+		            			<p className="sub-head">Contestants Kindly subscribe our <a href="https://www.youtube.com/channel/UCbgaFaw--RTkahdh9H0X89w"><i className="fa fa-youtube"></i><em>Youtube</em></a> channel and press the bell icon to get the notifications regarding the results.</p>
+		            			<p className="sub-head">Results will be announced within October and Winners, Best performers video will be posted on our Youtube channel.</p>
+								<button className="main-button">subscribe</button>
 		            		</div>
-		            		<div className="col-lg-6 text-center" >
+		            		<div className="col-lg-6 text-center img-container" >
 		            			<img className="img-fluid" src={require(".././images/unnamed.png")} alt="Nadanaloga Natyalaya"/>
 		            		</div>
-		            		
-		            		{/*
-			                <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12"
-			                    data-scroll-reveal="enter left move 30px over 0.6s after 0.4s">
-			                    <div className="features-item">
-			                        <div className="features-icon">
-			                            <img src={require(".././images/lotus-flower.svg")} alt=""/>
-			                            <h4>Bharathanatyam</h4>
-			                            <p className="mb-4">Share us your significant performance with 3 minutes videos and win the gold coins and cash prizes of Vijayadashami 2020.</p>
-			                            
-			                            <div className="condtions" id="cond1">
-			                            	<h5>Event Details</h5>
-			                            	<p><span>Age:</span> Age Categories: 6 to 12 years and 13 to 18 years</p>
-			                            	<p><span>Duration:</span>&nbsp;&nbsp; 3 minutes</p>
-			                            	<p><span>songs:</span>&nbsp;&nbsp;Any classical and cine classical songs</p>
-			                            	<p><span>Fees:</span>&nbsp;&nbsp;Rs 250.00/-</p>
-			                            	<p><span>Last Date:</span>&nbsp;&nbsp;23, October 2020</p>
-			                            	<p><span>Result On:</span>&nbsp;&nbsp;25, October 2020 (Vijayadashami)</p>
-			                            	<p><span>Note:</span>&nbsp;&nbsp;Costumes will not be considered for scoring and edited videos will not be accepted</p>
-			                            	<p><span>Registration Fees:</span> On registering with your videos, you will receive a unique ID number, Kindly pay your entry fees Rs 250/- on Google Pay(9566866588), and text the unique ID number in Google Pay.</p>
-			                            </div>
-			                            <a href="#" id="Bharathanatyam" className="main-button" onClick={()=>{this.handleModalOpen(); this.setState({competition:"Bharathanatyam"});}}>
-			                                Join
-			                            </a>
-			                        </div>
-			                    </div>
-			                </div>
-			                <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12"
-			                    data-scroll-reveal="enter bottom move 30px over 0.6s after 0.4s">
-			                    <div className="features-item">
-			                        <div className="features-icon">
-			                            <img src={require(".././images/music-note.svg")} alt=""/>
-			                            <h4>Vocal Music</h4>
-			                            <p>Share us your significant performance with 3 minutes videos and win the gold coins and cash prizes of Vijayadashami 2020.</p>
-			                            <div className="condtions" id="cond1">
-			                            	<h5>Event Details</h5>
-			                            	<p><span>Age:</span> Age Categories: 6 to 12 years and 13 to 18 years</p>
-			                            	<p><span>Duration:</span>&nbsp;&nbsp; 3 minutes</p>
-			                            	<p><span>songs:</span>&nbsp;&nbsp;Any classical and cine classical songs</p>
-			                            	<p><span>Fees:</span>&nbsp;&nbsp;Rs 250.00/-</p>
-			                            	<p><span>Last Date:</span>&nbsp;&nbsp;23, October 2020</p>
-			                            	<p><span>Result On:</span>&nbsp;&nbsp;25, October 2020 (Vijayadashami)</p>
-			                            	<p><span>Note:</span>&nbsp;&nbsp;Avoid karaoke, can have shruti box during the song</p>
-			                            	<p><span>Registration Fees:</span> On registering with your videos, you will receive a unique ID number, Kindly pay your entry fees Rs 250/- on Google Pay(9566866588), and text the unique ID number in Google Pay.</p>
-			                            </div>
-			                            <a href="#" className="main-button" id="Vocal-voice" onClick={()=>{this.handleModalOpen(); this.setState({competition:"Vocal Music"});}}>
-			                                Join
-			                            </a>
-			                        </div>
-			                    </div>
-			                </div>*/}
 			            </div>
-			            <div className="row">
+			            {/* <div className="row">
 			            	<div className="mt-5 text-center col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			            		<img src={require(".././images/posture-01.jpg")} alt="App" className="auto-img"/>
 			            	</div>
-		            	</div>
+		            	</div> */}
 			        </div>
 			    </section>
+				<section className="section">
+					<div className="container">
+					<div className="row pb-10">
+						<div className="col-lg-12 col-md-6 col-sm-12 col-xs-12">
+							<h2 className="head">Join the Vijayadashami <em>2021</em> competition</h2>
+						</div>
+						<div className=" col-lg-4 col-md-4 col-sm-12 col-xs-12" data-scroll-reveal="enter left move 30px over 0.6s after 0.4s">
+							<div className="features-item">
+								<div className="features-icon">
+									<img src={require(".././images/palette.svg")} alt=""/>
+									<h4>Art</h4>
+									<p className="mb-4">Share us your Art on A4 sheets with oil pastels, postals, pencil or crayon. Neatness and handling color will score, add your signature too.</p>
+									
+									<div className="condtions" id="cond1">
+										<h5>Event Details</h5>
+										<p><span>Age:</span> Age Categories: 6 to 12 years and 13 to 18 years</p>
+										<p><span>Duration:</span>&nbsp;&nbsp; 3 minutes</p>
+										<p><span>songs:</span>&nbsp;&nbsp;Any classical and cine classical songs</p>
+										<p><span>Fees:</span>&nbsp;&nbsp;Rs 500/-</p>
+										<p><span>Last Date:</span>&nbsp;&nbsp;25, October 2021</p>
+										<p><span>Result On:</span>&nbsp;&nbsp;25, October 2021 (Vijayadashami)</p>
+										<p><span>Note:</span>&nbsp;&nbsp;No specific theme or topic, Add your video not exceeeding 3 minutes</p>
+										<p><span>Registration Fees:</span>&nbsp;&nbsp;Pay Rs.500/- through card or Google Pay.</p>
+									</div>
+									<a href="#" id="Bharathanatyam" className="main-button" onClick={()=>{this.handleModalOpen(); this.setState({competition:"artLeads"});}}>
+										Join
+									</a>
+								</div>
+							</div>
+						</div>
+						<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12" data-scroll-reveal="enter left move 30px over 0.6s after 0.4s">
+							<div className="features-item">
+								<div className="features-icon">
+									<img src={require(".././images/bharatham.svg")} alt=""/>
+									<h4>Bharathanatyam</h4>
+									<p className="mb-4">Share us your significant performance with 3 minutes videos and win the gold coins and cash prizes of Vijayadashami 2021.</p>
+									
+									<div className="condtions" id="cond1">
+										<h5>Event Details</h5>
+										<p><span>Age:</span> Age Categories: 6 to 12 years and 13 to 18 years</p>
+										<p><span>Duration:</span>&nbsp;&nbsp; 3 minutes</p>
+										<p><span>songs:</span>&nbsp;&nbsp;Any classical and cine classical songs</p>
+										<p><span>Fees:</span>&nbsp;&nbsp;Rs 500/-</p>
+										<p><span>Last Date:</span>&nbsp;&nbsp;25, October 2021</p>
+										<p><span>Result On:</span>&nbsp;&nbsp;25, October 2021 (Vijayadashami)</p>
+										<p><span>Note:</span>&nbsp;&nbsp;Costumes will not be considered for scoring and edited videos will not be accepted</p>
+										<p><span>Registration Fees:</span>&nbsp;&nbsp;Pay Rs.500/- through card or Google Pay.</p>
+									</div>
+									<a href="#" id="Bharathanatyam" className="main-button" onClick={()=>{this.handleModalOpen(); this.setState({competition:"bharathamLeads"});}}>
+										Join
+									</a>
+								</div>
+							</div>
+						</div>	
+						<div className="col-lg-4 col-md-4 col-sm-12 col-xs-12"
+						data-scroll-reveal="enter bottom move 30px over 0.6s after 0.4s">
+						<div className="features-item">
+							<div className="features-icon">
+								<img src={require(".././images/music-note.svg")} alt=""/>
+								<h4>Vocal Music</h4>
+								<p className="mb-4">Share us your significant performance with 3 minutes videos and win the gold coins and cash prizes of Vijayadashami 2021.</p>
+								<div className="condtions" id="cond1">
+									<h5>Event Details</h5>
+									<p><span>Age:</span> Age Categories: 6 to 12 years and 13 to 18 years</p>
+									<p><span>Duration:</span>&nbsp;&nbsp; 3 minutes</p>
+									<p><span>songs:</span>&nbsp;&nbsp;Any classical and cine classical songs</p>
+									<p><span>Fees:</span>&nbsp;&nbsp;Rs 500/-</p>
+									<p><span>Last Date:</span>&nbsp;&nbsp;25, October 2021</p>
+									<p><span>Result On:</span>&nbsp;&nbsp;25, October 2021 (Vijayadashami)</p>
+									<p><span>Note:</span>&nbsp;&nbsp;Avoid Edited Videos, Avoid karaoke, can have shruti box during the song</p>
+									<p><span>Registration Fees:</span>&nbsp;&nbsp;Pay Rs.500/- through card or Google Pay.</p>
+								</div>
+								<a href="#" className="main-button" id="Vocal-voice" onClick={()=>{this.handleModalOpen(); this.setState({competition:"musicLeads"});}}>
+									Join
+								</a>
+							</div>
+						</div>
+					</div>
+					</div>
+					</div>
+				</section>
 
 			    {/*<div className="left-image-decor"></div>*/}
 
@@ -373,7 +423,7 @@ export default class IndexPage extends React.Component {
 					contentLabel="Example Modal In Gatsby"
 				>
 				
-					<div className="rm-header"><h2>Join Vijayadashami 2020</h2> <span onClick={this.handleModalClose}>x</span></div>
+					<div className="rm-header"><h2>Join Vijayadashami 2021</h2> <span onClick={this.handleModalClose}>x</span></div>
 					<form method="post" onSubmit={this.contest}>
 						<div className="row">
                             <div className="col-md-6 col-sm-12">
@@ -434,8 +484,8 @@ export default class IndexPage extends React.Component {
 	                        </div>
                             <div className="col-lg-12">
                                 <fieldset>
-                                	<p>On registering with your videos, you will receive a unique ID number, Kindly pay your entry fees Rs 250/- on Google Pay(9566866588), and text the unique ID number in Google Pay.</p>
-                                    <button type="submit" id="form-submit" className="main-button" disabled={this.state.loading}>{this.state.loading === true ?<div className="spinner-border"></div>:null}Register</button>
+                                	{/* <p>On registering with your videos, you will receive a unique ID number, Kindly pay your entry fees Rs 250/- on Google Pay(9566866588), and text the unique ID number in Google Pay.</p> */}
+                                    <button type="submit" id="form-submit" className="main-button" disabled={this.state.loading}>{this.state.loading === true ?<div className="spinner-border"></div>:null}Pay & Register</button>
                                     <input type="hidden" id="competition-val" value={this.state.competition} />
                                 </fieldset>
                             </div>
