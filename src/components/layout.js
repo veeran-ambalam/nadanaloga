@@ -11,6 +11,9 @@ import PropTypes from "prop-types"
 import Header from "./header"
 import Footer from "./Footer"
 
+import favicon from '../images/favicon.png'
+import Helmet from 'react-helmet'
+
 import "./assets/css/bootstrap.min.css"
 import "./assets/css/font-awesome.css"
 import "./assets/css/templatemo-lava.css"
@@ -25,6 +28,7 @@ import "./assets/css/owl-carousel.css"
 // import "./assets/js/jquery.counterup.min.js"
 // import "./assets/js/imgfix.min.js"
 // import "./assets/js/custom.js"
+
 export default function Layout({ children }) {
 
   return (
@@ -34,6 +38,9 @@ export default function Layout({ children }) {
         <meta name="description" content="" />
         <meta name="author" content="TemplateMo" />
         <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet" />
+        <Helmet>
+          <link rel="icon" href={favicon} />
+        </Helmet>
         <Header />
         <main>{children}</main>
         <Footer />

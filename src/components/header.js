@@ -2,46 +2,39 @@ import React from 'react'
 // import { Link } from "gatsby"
 
 export default class Header extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            menu:false,
+        }
+    }
+
+    nav(){
+        this.setState({menu:!this.state.menu});
+    }
 
     render(){
         return (
         <>
-        <div id="preloader">
-            <div class="jumper">
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-        </div>
-
-        <header class="header-area header-sticky">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <nav class="main-nav">
+        <header className="header-area header-sticky">
+            <div className="container">
+                <div className="row">
+                    <div className="col-12">
+                        <nav className="main-nav">
                             {/*<!-- ***** Logo Start ***** -->*/}
-                            <a href="index.html" class="logo">
-                                Lava
+                            <a href="index.html" className="logo">
+                                <img src={require("../images/logo.png")} />
                             </a>
                             {/*<!-- ***** Logo End ***** -->*/}
                             {/*<!-- ***** Menu Start ***** -->*/}
-                            <ul class="nav">
-                                <li class="scroll-to-section"><a href="#welcome" class="menu-item">Home</a></li>
-                                <li class="scroll-to-section"><a href="#about" class="menu-item">About</a></li>
-                                <li class="scroll-to-section"><a href="#testimonials" class="menu-item">Testimonials</a>
-                                </li>
-                                <li class="submenu">
-                                    <a href="javascript:;">Drop Down</a>
-                                    <ul>
-                                        <li><a href="" class="menu-item">About Us</a></li>
-                                        <li><a href="" class="menu-item">Features</a></li>
-                                        <li><a href="" class="menu-item">FAQ's</a></li>
-                                        <li><a href="" class="menu-item">Blog</a></li>
-                                    </ul>
-                                </li>
-                                <li class="scroll-to-section"><a href="#contact-us" class="menu-item">Contact Us</a></li>
+                            <ul className={this.state.menu === true ? "nav mobileNav":"nav"}>
+                                <li className="scroll-to-section"><a href="#competition" className="menu-item">Competitions</a></li>
+                                <li className="scroll-to-section"><a href="https://www.youtube.com/channel/UCbgaFaw--RTkahdh9H0X89w" className="menu-item">Youtube</a></li>
+                                {/*<li className="scroll-to-section"><a href="#about" className="menu-item">Instagram</a></li>*/}
+                                <li className="scroll-to-section"><a href="#about-us" className="menu-item">About Us</a></li>
+                                <li className="scroll-to-section"><a href="#contact-us" className="menu-item">Contact Us</a></li>
                             </ul>
-                            <a class='menu-trigger'>
+                            <a className='menu-trigger' onClick={this.nav.bind(this)}>
                                 <span>Menu</span>
                             </a>
                             {/*<!-- ***** Menu End ***** -->*/}

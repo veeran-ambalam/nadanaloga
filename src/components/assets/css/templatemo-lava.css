@@ -192,6 +192,7 @@ button.main-button {
   text-transform: uppercase;
   color: #fff;
   font-weight: 600;
+  width: calc(80%);
   letter-spacing: 1px;
   -webkit-transition: all 0.3s ease 0s;
   -moz-transition: all 0.3s ease 0s;
@@ -274,6 +275,9 @@ header
 .header-area .main-nav {
   min-height: 80px;
   background: transparent;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .header-area .main-nav .logo {
@@ -289,13 +293,16 @@ header
   -o-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
 }
+.logo img{
+  max-width: 180px;
+}
 
 
 .header-area .main-nav .nav {
-  float: left;
+  /*float: left;
   margin-top: 27px;
   margin-left: 15%;
-  margin-right: 0px;
+  margin-right: 0px;*/
   background-color: #fff;
   padding: 0px 20px;
   -webkit-transition: all 0.3s ease 0s;
@@ -304,6 +311,16 @@ header
   transition: all 0.3s ease 0s;
   position: relative;
   z-index: 999;
+}
+.header-area .main-nav .mobileNav{
+  position: absolute;
+  top: 80px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex !important;
+  margin: 0;
+  padding: 0;
 }
 
 .header-area .main-nav .nav li {
@@ -534,7 +551,7 @@ header
 }
 
 .header-area.header-sticky .nav {
-  margin-top: 20px !important;
+  /*margin-top: 20px !important;*/
 }
 
 .header-area.header-sticky .nav li a.active {
@@ -656,22 +673,36 @@ welcome
 .welcome-area {
   width: 100%;
   height: 100vh;
-  min-height: 793px;
-  background-image: url(../images/banner-bg.png);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /*min-height: 793px;
+  background-image: url(../images/a3.png);
   background-repeat: no-repeat;
-  background-position: right top;
+  background-position: right top;*/
 }
 
 .welcome-area .header-text .left-text {
   position: relative;
   align-self: center;
-  margin-top: 35%;
-  transform: perspective(1px) translateY(-30%) !important;
+  /*margin-top: 35%;
+  transform: perspective(1px) translateY(-30%) !important;*/
+}
+.welcome-area .header-text .hero-pic{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+@media (max-width: 810px) {
+  .welcome-area .header-text .hero-pic img{
+    margin-top: 80px;
+  }
+}
 .welcome-area .header-text h1 {
   font-weight: 900;
-  font-size: 52px;
+  font-size: 48px;
   line-height: 80px;
   letter-spacing: 1px;
   margin-bottom: 30px;
@@ -695,8 +726,8 @@ welcome
 
 @media (max-width: 1420px) {
   .welcome-area .header-text {
-    width: 70%;
-    margin-left: 5%;
+    /*width: 70%;
+    margin-left: 5%;*/
   }
 }
 
@@ -716,7 +747,7 @@ welcome
   }
   .welcome-area .header-text {       
     width: 92%;
-    padding-top: 793px;
+    padding-top: 80px;
   }
   .welcome-area .header-text .left-text {
     margin-top: 5%;
@@ -729,7 +760,7 @@ welcome
   }
 
   .welcome-area .header-text {
-    padding-top: 100%;
+    padding-top: 80px;
     margin-left: 0;
   }
     
@@ -759,7 +790,7 @@ about
 
 .features-item {
   border-radius: 5px;
-  padding: 60px 30px;
+  padding: 30px;
   text-align: center;
   box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
 }
@@ -788,11 +819,32 @@ about
   margin-bottom: 25px;
 }
 
+.features-item .condtions{
+  padding: 24px;
+  text-align: left;
+}
+.features-item .condtions h5{
+  margin-bottom: 14px;
+}
+.features-item .condtions p{
+    margin-bottom: 10px;
+    text-align: left;
+
+}
+.features-item .condtions p span{
+  font-weight: bold;
+  font-size: 14px;
+  color: #7a7a7a;
+}
 .features-item .main-button {
-  margin-top: 35px;
   display: inline-block;
+  width: 180px;
 }
 
+.features-icon img{
+  max-width: 80px;
+  max-height: 80px;
+}
 
 /*
 ---------------------------------------------
@@ -810,35 +862,53 @@ promotion
   margin-top: -200px;
 }
 
-#promotion {
+.about{
+  background-image: url(../images/left-bg-decor.png);
+  background-repeat: no-repeat;
+  padding-top: 80px;
+}
+
+.about-image{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+}
+
+@media (max-width: 810px){
+  .about-image img{
+    max-width: 150%;
+  }
+}
+#about-us {
   padding: 100px 0px;
 }
 
-#promotion .left-image {
+#about-us .left-image {
   align-self: center;
 }
 
-#promotion .right-text ul {
+#about-us .right-text ul {
   padding: 0;
   margin: 0;
 }
 
-#promotion .right-text ul li {
+#about-us .right-text ul li {
   display: inline-block;
-  margin-bottom: 60px;
+  margin-bottom: 28px;
 }
 
-#promotion .right-text ul li:last-child {
+#about-us .right-text ul li:last-child {
   margin-bottom: 0px;
 }
 
-#promotion .right-text img {
+#about-us .right-text img {
   display: inline-block;
   float: left;
   margin-right: 30px;
 }
 
-#promotion .right-text h4 {
+#about-us .right-text h4 {
   font-size: 22px;
   color: #1e1e1e;
   margin-bottom: 15px;
@@ -966,7 +1036,7 @@ footer
     padding-top: 0px!important;
     margin-top: 0px!important;
   }
-  .contact-form {
+  .contact-form, .ReactModal__Content{
     margin-bottom: 45px;
   }
   footer .right-content {
@@ -978,7 +1048,7 @@ footer
 }
 
 footer {
-  margin-top: 200px;
+  /*margin-top: 200px;*/
   padding-top: 120px;
   background-image: url(../images/footer-bg.png);
   background-repeat: no-repeat;
@@ -991,7 +1061,7 @@ footer .footer-content {
   padding: 120px 0px;
 }
 
-.contact-form {
+.contact-form, .ReactModal__Content {
   position: relative;
   z-index: 10;
   padding: 45px;
@@ -1006,7 +1076,9 @@ footer .right-content {
 }
 
 .contact-form input,
-.contact-form textarea {
+.contact-form textarea,
+.ReactModal__Content input,
+.ReactModal__Content textarea {
   color: #777;
   font-size: 13px;
   border: 1px solid #eee;
@@ -1020,28 +1092,41 @@ footer .right-content {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 }
 
-.contact-form textarea {
-  height: 150px;
+.ReactModal__Content input{
+  height: 40px !important;
+}
+
+.auto-img{
+  max-width: calc(100%);
+}
+
+#addressProofFile{
+  padding: 16px;
+  height: 60px !important;
+}
+
+.contact-form textarea, .ReactModal__Content textarea {
+  height: 120px;
   resize: none;
   padding: 20px;
 }
 
-.contact-form {
+.contact-form, .ReactModal__Content {
   text-align: center;
 }
 
-.contact-form ::-webkit-input-placeholder { /* Edge */
+.contact-form ::-webkit-input-placeholder, .ReactModal__Content::-webkit-input-placeholder { /* Edge */
   color: #7a7a7a;
 }
 
-.contact-form :-ms-input-placeholder { /* Internet Explorer 10-11 */
+.contact-form :-ms-input-placeholder, .ReactModal__Content :-ms-input-placeholder { /* Internet Explorer 10-11 */
   color: #7a7a7a;
 }
 
-.contact-form ::placeholder {
+.contact-form ::placeholder,.ReactModal__Content ::placeholder{
   color: #7a7a7a;
 }
 
@@ -1049,7 +1134,7 @@ footer .right-content {
   color: #fff;
 }
 
-.footer-content .right-content h2 {
+.footer-content .right-content h2, .right-content h2, .head {
   margin-top: 0px;
   margin-bottom: 30px;
   font-size: 42px;
@@ -1058,7 +1143,16 @@ footer .right-content {
   letter-spacing: 1px;
 }
 
-.footer-content .right-content h2 em {
+.footer-content .right-content h2 em, .right-content h2 em, .head em{
+  font-style: normal;
+  color: #fba70b;
+}
+
+.sub-head{
+  margin-bottom: 40px; 
+}
+
+.sub-head em{
   font-style: normal;
   color: #fba70b;
 }
@@ -1203,6 +1297,50 @@ preloader
 #preloader .jumper > div:nth-child(3) {
   -webkit-animation-delay: 0.66666s;
   animation-delay: 0.66666s;
+}
+
+
+.ReactModal__Overlay{
+  background-color: rgba(0,0,0, 0.75) !important;
+  z-index: 5000;
+}
+
+.ReactModal__Content{
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.ReactModal__Content .rm-header{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.ReactModal__Content .rm-header span{
+  cursor: pointer;
+}
+
+.ReactModal__Content .rm-header h2{
+  font-size: x-large;
+}
+
+.success-img, .cancel-img{
+  max-width: 240px;
+}
+
+.spinner-border{
+  width: 1rem;
+  height: 1rem;
+  margin-right: 8px;
+}
+/*@media(max-width: 424px){*/
+@media (max-width: 424px) {
+  ..ReactModal__Content{
+    left: 0 !important;
+    right: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+  }
 }
 
 @-webkit-keyframes jumper {
